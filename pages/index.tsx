@@ -50,15 +50,16 @@ const Home: NextPage = () => {
       const canvas = await html2canvas(element, { logging: true });
 
       canvas.toBlob(async (blob) => {
-        console.log("blob", blob);
-        const foo = URL.createObjectURL(blob);
-        setUrl(foo);
-        const form = new FormData();
-        form.append("file", blob!);
-        const { filename } = await (
-          await fetch("/api/share", { method: "POST", body: form })
-        ).json();
-        window.location.pathname = `/view/${filename}`;
+        if (blob) {
+          const foo = URL.createObjectURL(blob);
+          setUrl(foo);
+          const form = new FormData();
+          form.append("file", blob);
+          const { filename } = await (
+            await fetch("/api/share", { method: "POST", body: form })
+          ).json();
+          window.location.pathname = `/view/${filename}`;
+        }
       });
     }
   };
